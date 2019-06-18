@@ -36,9 +36,12 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavBar()
-        MotionHelper.shared.processSleep()
         setupViews()
         try? fetchedResultsController.performFetch()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        MotionHelper.shared.processSleep()
     }
     func setupViews() {
         tableViewSleep.delegate = self
