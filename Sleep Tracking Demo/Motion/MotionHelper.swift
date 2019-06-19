@@ -24,43 +24,48 @@ class MotionHelper {
                     arrActivities.append(ActivityStationary.init(end: motions[index+1].startDate, start: motion.startDate))
                 }
             }
-            var startDate: Date?
-            var endDate: Date?
-            var activeDuration = TimeInterval()
-            for (i, activity) in arrActivities.enumerated() {
-                if startDate != nil {
-                    activeDuration += activity.startDate.timeIntervalSinceNow - arrActivities[i-1].endDate.timeIntervalSinceNow
-                    if activeDuration < 300 {
-                        if ((activity.startDate+20*60) < activity.endDate) {
-                            endDate = activity.endDate
-                        } else {
-                            
-                        }
-                    } else {
-                        if endDate!-2*60*60 > startDate! {
-                            if let start = startDate, let end = endDate {
-                                Sleep.addSleep(start: start, end: end)
-                            }
-                            startDate = nil
-                            endDate = nil
-                            activeDuration = 0
-                        } else {
-                            startDate = nil
-                            endDate = nil
-                            activeDuration = 0
-                        }
-                    }
-                } else {
-                    if ( activity.startDate+20*60 ) < activity.endDate {
-                        startDate = activity.startDate
-                        endDate = activity.endDate
-                    }
-                }
+            self.processActivitiesStationary(arrActivities: arrActivities)
+            if let last = motions.last {
+                UserDefaults.standard.set(last.startDate, forKey: UserDefaultsKeys.lastProcessDate)
             }
             DispatchQueue.main.async {
                 CoreDataManager.shared.saveChanges()
             }
         }
-        UserDefaults.standard.set(Date(), forKey: UserDefaultsKeys.lastProcessDate)
+    }
+    func processActivitiesStationary(arrActivities: [ActivityStationary]) {
+        var startDate: Date?
+        var endDate: Date?
+        var activeDuration = TimeInterval()
+        for (i, activity) in arrActivities.enumerated() {
+            if startDate != nil {
+                activeDuration += activity.startDate.timeIntervalSinceNow - arrActivities[i-1].endDate.timeIntervalSinceNow
+                if activeDuration < 300 {
+                    if ((activity.startDate+20*60) < activity.endDate) {
+                        endDate = activity.endDate
+                    } else {
+                        
+                    }
+                } else {
+                    if endDate!-2*60*60 > startDate! {
+                        if let start = startDate, let end = endDate {
+                            Sleep.addSleep(start: start, end: end)
+                        }
+                        startDate = nil
+                        endDate = nil
+                        activeDuration = 0
+                    } else {
+                        startDate = nil
+                        endDate = nil
+                        activeDuration = 0
+                    }
+                }
+            } else {
+                if ( activity.startDate+20*60 ) < activity.endDate {
+                    startDate = activity.startDate
+                    endDate = activity.endDate
+                }
+            }
+        }
     }
 }
