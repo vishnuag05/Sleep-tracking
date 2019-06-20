@@ -20,14 +20,14 @@ class MotionHelper {
             guard let motions = motions else { return }
             var arrActivities = [ActivityStationary]()
             for (index, motion) in motions.enumerated() {
-                if motion.stationary == true, motions.count-1 != index {
-                    arrActivities.append(ActivityStationary.init(end: motions[index+1].startDate, start: motion.startDate))
+                if motion.stationary == true {
+                    arrActivities.append(ActivityStationary.init(end: (motions.count-1 != index ? motions[index+1].startDate : Date()), start: motion.startDate))
                 }
             }
-            self.processActivitiesStationary(arrActivities: arrActivities)
             if let last = motions.last {
                 UserDefaults.standard.set(last.startDate, forKey: UserDefaultsKeys.lastProcessDate)
             }
+            self.processActivitiesStationary(arrActivities: arrActivities)
             DispatchQueue.main.async {
                 CoreDataManager.shared.saveChanges()
             }
@@ -66,6 +66,14 @@ class MotionHelper {
                     endDate = activity.endDate
                 }
             }
+        }
+        if let start = startDate, let end = endDate {
+        if end-2*60*60 > start {
+            Sleep.addSleep(start: start, end: end)
+            startDate = nil
+            endDate = nil
+            activeDuration = 0
+        }
         }
     }
 }
