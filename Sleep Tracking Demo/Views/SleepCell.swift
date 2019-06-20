@@ -12,11 +12,13 @@ class SleepCell: UITableViewCell {
     let labelDate: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         return label
     }()
     let labelTimeInterval: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black
+        label.font = UIFont.systemFont(ofSize: 14, weight: .light)
         return label
     }()
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

@@ -47,7 +47,7 @@ class MotionHelper {
                         
                     }
                 } else {
-                    if endDate!-2*60*60 > startDate! {
+                    if endDate!-3*60*60 > startDate! {
                         if let start = startDate, let end = endDate {
                             Sleep.addSleep(start: start, end: end)
                         }
@@ -68,7 +68,7 @@ class MotionHelper {
             }
         }
         if let start = startDate, let end = endDate {
-        if end-2*60*60 > start {
+        if end-3*60*60 > start {
             Sleep.addSleep(start: start, end: end)
             startDate = nil
             endDate = nil
