@@ -47,7 +47,7 @@ extension Date {
 extension Int {
     var secondsToDuration: String {
         let hour = self / 3600
-        let minute = self % (60)
+        let minute = (self % 3600)/60
         if minute == 0 {
             return "\(hour) hr"
         } else if hour == 0 {
