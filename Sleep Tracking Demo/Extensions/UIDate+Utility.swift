@@ -44,3 +44,16 @@ extension Date {
         return weekdays[(components.weekday ?? 1) - 1]
     }
 }
+extension Int {
+    var secondsToDuration: String {
+        let hour = self / 3600
+        let minute = self % (60)
+        if minute == 0 {
+            return "\(hour) hr"
+        } else if hour == 0 {
+            return "\(minute) min"
+        } else {
+            return "\(hour)h \(minute)m"
+        }
+    }
+}

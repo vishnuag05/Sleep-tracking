@@ -38,6 +38,6 @@ class SleepCell: UITableViewCell {
     func configure(sleep: Sleep) {
         guard let start = sleep.startDate as Date?, let end = sleep.endDate as Date? else { return }
         labelDate.text = String(format: "%@ (%@)", start.convertDateToMonthDay, start.dayOfTheWeek())
-        labelTimeInterval.text = String(format: "%@ - %@", start.convertDateToTime, end.convertDateToTime)
+        labelTimeInterval.text = String(format: "%@ - %@ (%@)", start.convertDateToTime, end.convertDateToTime, Int(end.timeIntervalSince(start)).secondsToDuration)
     }
 }
